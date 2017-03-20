@@ -1,0 +1,40 @@
+<aura:component description="LAKeyboardShortcutAdd">
+    <!-- debug Apex code -->
+    <aura:attribute name="debug" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="debugClient" type="Boolean" default="false" access="global" />
+
+    <!-- For using ApexBridge Library -->
+    <c:ETLC_ApexBridge aura:id="ApexBridge" debugServer="{!v.debug}" debugClient="{!v.debugClient}"/>
+
+    <!-- For using Utils library -->
+    <c:Utils debugClient="{!v.debugClient}" aura:id="utils"  />
+
+
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}" />-->
+
+
+    <aura:attribute name="keyboard" type="LA_Keyboard__c" default="{'sobjectType': 'LA_Keyboard__c', 'ltngapps__Shortcuts__c': '{}','Name': ''}" access="public"/>
+    <aura:attribute name="shortcuts" type="Object" access="public"/>
+    <aura:attribute name="shortcutsMap" type="Object[]" access="public" />
+
+    <!--<aura:attribute name="key" type="Object" />-->
+
+    <div aura:id="uiMessage">{!v.body}</div>
+
+    <div class="slds-form--stacked">
+        <div class="slds-form-element">
+            <lightning:input aura:id="keySelected" type="text" name="keySelected" label="Alt+Shift+ (Upper Case A-Z OR 0-9)" minLength="1" maxLength="1"
+                             pattern="[0-9A-Z]{1}" required="true" placeholder="A-Z 0-9" />
+            <div class="slds-text-body--regular">Note: Type in same key again to overwrite previous value</div>
+        </div>
+        <div class="slds-form-element">
+            <lightning:input aura:id="path" type="text" value="" name="path" label="Path to Redirect"
+                             pattern="[a-zA-Z0-9_\?=/]+"
+                             required="true"
+                            placeholder="/sObject/Account/list"/>
+        </div>
+        <div class="slds-form-element">
+            <lightning:button label="Add Shortcut" onclick="{!c.addShortcut}" />
+        </div>
+    </div>
+</aura:component>

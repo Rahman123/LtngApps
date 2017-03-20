@@ -1,0 +1,54 @@
+<aura:component description="LAKeyboardShortcutList">
+    <!-- debug Apex code -->
+    <aura:attribute name="debug" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="debugClient" type="Boolean" default="false" access="global" />
+
+    <!-- For using ApexBridge Library -->
+    <c:ETLC_ApexBridge aura:id="ApexBridge" debugServer="{!v.debug}" debugClient="{!v.debugClient}"/>
+
+    <!-- For using Utils library -->
+    <c:Utils debugClient="{!v.debugClient}" aura:id="utils"  />
+
+
+
+
+    <aura:attribute name="keyboard" type="LA_Keyboard__c" default="{'sobjectType': 'LA_Keyboard__c', 'ltngapps__Shortcuts__c': '{}','Name': ''}" access="public"/>
+    <aura:attribute name="shortcuts" type="Object" access="public" />
+    <aura:attribute name="shortcutsMap" type="Object[]" access="public" />
+
+    <div aura:id="uiMessage"></div>
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--striped">
+        <thead>
+        <tr class="slds-text-title--caps">
+            <th scope="col">
+                <div class="slds-truncate" title="Remove">&nbsp;</div>
+            </th>
+            <th scope="col">
+                <div class="slds-truncate" title="Key">Key</div>
+            </th>
+            <th scope="col">
+                <div class="slds-truncate" title="Mapped Path">Mapped Path</div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.shortcutsMap}" var="shortcut" indexVar="index">
+                <aura:if isTrue="{!shortcut.value != false}">
+                    <tr>
+                        <th scope="row" data-label="Mapped Path">
+                            <lightning:button label="Remove" value="{!shortcut.keyCode}" onclick="{!c.removeShortcut}"/>
+                        </th>
+                        <th scope="row" data-label="Key">
+                            <div class="slds-truncate" title="Key">{!shortcut.keyName}</div>
+                        </th>
+                        <th scope="row" data-label="Mapped Path">
+                            <div class="slds-truncate" title="Mapped Path">
+                                <ui:outputURL value="{! '/one/one.app#' + shortcut.value}" label="{!shortcut.value}" />
+                            </div>
+                        </th>
+                    </tr>
+                </aura:if>
+            </aura:iteration>
+        </tbody>
+    </table>
+</aura:component>

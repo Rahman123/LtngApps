@@ -1,0 +1,4 @@
+<design:component label="Keyboard Shortcuts">
+    <design:attribute name="debug" label="Debug Apex" />
+    <design:attribute name="debugClient" label="Debug Javascript" />
+</design:component>

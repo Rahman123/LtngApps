@@ -1,0 +1,41 @@
+<aura:component description="LAKeyboard" implements="flexipage:availableForAllPageTypes" access="global">
+    <!-- debug Apex code -->
+    <aura:attribute name="debug" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="debugClient" type="Boolean" default="false" access="global" />
+
+
+    <!-- For using ApexBridge Library -->
+    <c:ETLC_ApexBridge aura:id="ApexBridge" debugServer="{!v.debug}" debugClient="{!v.debugClient}"/>
+
+    <!-- For using Utils library -->
+    <c:Utils debugClient="{!v.debugClient}" aura:id="utils"  />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:attribute name="keyboard" type="LA_Keyboard__c" default="{'sobjectType': 'LA_Keyboard__c', 'ltngapps__Shortcuts__c': '{}','Name': ''}" access="public"/>
+    <aura:attribute name="shortcuts" type="Object"  access="public"/>
+    <aura:attribute name="shortcutsMap" type="Object[]" access="public" />
+
+    <div class="slds">
+        <lightning:tabset variant="scoped">
+            <lightning:tab title="Shortcuts"
+                    id="shortcuts">
+                <aura:set attribute="label">
+                    Shortcuts
+                </aura:set>
+                <div aura:id="fetchUiMessage">{!v.body}</div>
+                <aura:if isTrue="{!v.shortcutsMap.length > 0}">
+                    <c:LAKeyboardShortcutList debug="{!v.debug}" debugClient="{!v.debugClient}" keyboard="{!v.keyboard}" shortcuts="{!v.shortcuts}" shortcutsMap="{!v.shortcutsMap}"/>
+                </aura:if>
+            </lightning:tab>
+            <lightning:tab title="Add Shortcuts"
+                    id="addshortcuts">
+                <aura:set attribute="label">
+                    Add Shortcut
+                </aura:set>
+                <div aura:id="saveUiMessage">{!v.body}</div>
+                <c:LAKeyboardShortcutAdd debug="true" debugClient="true" keyboard="{!v.keyboard}" shortcuts="{!v.shortcuts}" shortcutsMap="{!v.shortcutsMap}" />
+            </lightning:tab>
+        </lightning:tabset>
+    </div>
+</aura:component>
