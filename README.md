@@ -30,5 +30,6 @@ I have used following libraries in my projects. These helped me reduce developme
 - [CodeScience CSUtils](https://github.com/CodeScience/CSUtils/tree/sec-rev/src/classes)
 
 Thanks,
-[]Jaswinder Rattanpal](www.rattanpal.com)
+<br/>
+[Jaswinder Rattanpal](www.rattanpal.com)
 
