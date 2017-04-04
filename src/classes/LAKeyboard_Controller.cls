@@ -3,25 +3,16 @@
  */
 public with sharing class LAKeyboard_Controller extends ETLC_ApexBridge_Abstract {
 
-    private Boolean debugFlag;
-    private static Profile p;
-    private static User u;
-    /**
-     * Central place to debug logs
-     */
-    private void debug(Object message){
-        If(debugFlag)   {
-            System.debug(message);
-        }
-    }
 
     /**
      * Abstract method from ELC_ApexBridge class
      */
     public override void process(ETLC_ApexBridge_Data data) {
-        this.debugFlag = data.debug;
+        if(data.debug) {
+            Util.debug = data.debug;
+        }
 
-       debug('data BEFORE:' + data);
+       Util.debug('data BEFORE:' + data);
         // Depending on the mode, determine which operation to perform
         String mode = (String) data.getInputValue('mode');
 
@@ -31,7 +22,7 @@ public with sharing class LAKeyboard_Controller extends ETLC_ApexBridge_Abstract
             data.output = ETLC_ApexBridge_Data.encodeData(saveShortcuts((String)data.getInputValue('shortcutList')));
         }
 
-        debug('data AFTER:' + data);
+        Util.debug('data AFTER:' + data);
     }
 
     /**
@@ -54,15 +45,15 @@ public with sharing class LAKeyboard_Controller extends ETLC_ApexBridge_Abstract
             );
 
             List<LA_Keyboard__c> lakList = [SELECT ID, Name, User__c, Shortcuts__c from LA_Keyboard__c where User__c=:Userinfo.getUserId() LIMIT  1];
-            debug('LAKeyboard_Controller.fetchShortcuts():lakList: ' + lakList);
+            Util.debug('LAKeyboard_Controller.fetchShortcuts():lakList: ' + lakList);
             if(lakList.size() > 0 ){
                 lak = lakList[0];
             }
-        }catch (SFDCAccessControlException e) { String message = 'Access Control violation - Type: ' + e.getExceptionType() + ' Reason: ' + e.getExceptionReason() + ' Object: ' + e.getExceptionObject() + ' Field: ' + e.getExceptionField() + ' Text: ' + e.getText();debug('DWCreateOrder_Controller.getDWAccountList():SFDCAccessControlException: ' + message);
-        }catch(Exception e){ Util.log('LAKeyboard_Controller.fetchShortcuts():Exception: ' + e.getMessage()); }
+        }catch (SFDCAccessControlException e) { String message = 'Access Control violation - Type: ' + e.getExceptionType() + ' Reason: ' + e.getExceptionReason() + ' Object: ' + e.getExceptionObject() + ' Field: ' + e.getExceptionField() + ' Text: ' + e.getText();Util.debug('DWCreateOrder_Controller.getDWAccountList():SFDCAccessControlException: ' + message);
+        }catch(Exception e){ Util.debug('LAKeyboard_Controller.fetchShortcuts():Exception: ' + e.getMessage()); }
 
 
-        debug('LAKeyboard_Controller.fetchShortcuts():lak: ' + lak);
+        Util.debug('LAKeyboard_Controller.fetchShortcuts():lak: ' + lak);
         return lak;
     }
 
@@ -110,11 +101,11 @@ public with sharing class LAKeyboard_Controller extends ETLC_ApexBridge_Abstract
             lak.Shortcuts__c = shortcutList;
             upsert lak;
 
-        }catch (SFDCAccessControlException e) { String message = 'Access Control violation - Type: ' + e.getExceptionType() + ' Reason: ' + e.getExceptionReason() + ' Object: ' + e.getExceptionObject() + ' Field: ' + e.getExceptionField() + ' Text: ' + e.getText();debug('DWCreateOrder_Controller.getDWAccountList():SFDCAccessControlException: ' + message);
-        }catch(Exception e){ Util.log('LAKeyboard_Controller.saveShortcuts():Exception: ' + e.getMessage()); }
+        }catch (SFDCAccessControlException e) { String message = 'Access Control violation - Type: ' + e.getExceptionType() + ' Reason: ' + e.getExceptionReason() + ' Object: ' + e.getExceptionObject() + ' Field: ' + e.getExceptionField() + ' Text: ' + e.getText();Util.debug('DWCreateOrder_Controller.getDWAccountList():SFDCAccessControlException: ' + message);
+        }catch(Exception e){ Util.debug('LAKeyboard_Controller.saveShortcuts():Exception: ' + e.getMessage()); }
 
 
-        debug('LAKeyboard_Controller.fetchShortcuts():lak: ' + lak);
+        Util.debug('LAKeyboard_Controller.fetchShortcuts():lak: ' + lak);
         return lak;
     }
 

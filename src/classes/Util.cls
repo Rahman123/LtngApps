@@ -4,7 +4,8 @@
 
 public with sharing class Util {
     public static Boolean debug = false;
-    public static void log(Object message) {
+ 
+     public static void debug(Object message) {
         if(debug == true) {
             System.debug(message);
         }

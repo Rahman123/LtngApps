@@ -10,9 +10,10 @@
 
         if ((path.get('v.validity') != null && ( !path.get('v.validity').valid || path.get('v.validity').valueMissing)) || $A.util.isEmpty(path.get('v.value'))) {
             message.push(
-                ["ui:message", {
+                ["markup://ui:message", {
                     'severity': 'error',
-                    'body': 'Please enter path to map'
+                    'body': 'Please enter path to map',
+                    'closable': true
                 }]
             );
         }
@@ -20,9 +21,10 @@
 
         if((keySelected.get('v.validity') != null && (!keySelected.get('v.validity').valid ||  keySelected.get('v.validity').valueMissing)) || $A.util.isEmpty(keySelected.get('v.value'))){
             message.push(
-                ["ui:message", {
+                ["markup://ui:message", {
                     'severity': 'error',
-                    'body': 'Please enter a key in proper format'
+                    'body': 'Please enter a key in proper format',
+                    'closable': true
                 }]
             );
         }
@@ -55,7 +57,7 @@
             apexBridge.callApex({
                 component: component,
                 data: {
-                    operation: "LAKeyboard_Controller",
+                    operation: "LA_KeyboardShortcuts_Controller",
                     input: {
                         mode: 'saveShortcuts',
                         shortcutList: JSON.stringify(shortcuts)
@@ -65,19 +67,21 @@
                     var lak = data.output;
                     var message = Array();
 
-                    if ($A.util.isUndefined(lak.ltngapps__Shortcuts__c) || lak.ltngapps__Shortcuts__c == null) {
+                    if ($A.util.isUndefined(lak.ltngapps__Keyboard_Shortcuts__c) || lak.ltngapps__Keyboard_Shortcuts__c == null) {
                         message.push(
-                            ["ui:message", {
+                            ["markup://ui:message", {
                                 'severity': 'error',
-                                'body': 'Some error occured while adding keyboard shortcut'
+                                'body': 'Some error occured while adding keyboard shortcut',
+                                'closable': true
                             }]
                         );
 
                     } else {
                         message.push(
-                            ["ui:message", {
+                            ["markup://ui:message", {
                                 'severity': 'success',
-                                'body': 'Shortcut was added successfully'
+                                'body': 'Shortcut was added successfully',
+                                'closable': true
                             }]
                         );
                         //Update the attribute so that it can trickle up to parent component

@@ -1,4 +1,5 @@
 <design:component label="Keyboard Shortcuts">
+    <design:attribute name="shortcutsDefault" label='Default Shortcuts for new users ({"65":"/sObject/Account/list","67":"/sObject/Contact/list"})' default='{"65":"/sObject/Account/list","67":"/sObject/Contact/list"}'/>
     <design:attribute name="debug" label="Debug Apex" />
     <design:attribute name="debugClient" label="Debug Javascript" />
 </design:component>

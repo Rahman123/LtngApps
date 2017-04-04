@@ -5,4 +5,5 @@
 <aura:application description="DemoApp" extends="force:slds">
     <c:LAKeyboard debug="true" debugClient="true" />
     <!--<c:LAKeyboardShortcutAdd debug="true" debugClient="true" />-->
+    <!-- Test for Refrsh -->
 </aura:application>

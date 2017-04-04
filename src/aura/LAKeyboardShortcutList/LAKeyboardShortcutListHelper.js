@@ -17,7 +17,7 @@
         apexBridge.callApex({
             component: component,
             data: {
-                operation: "LAKeyboard_Controller",
+                operation: "LA_KeyboardShortcuts_Controller",
                 input: {
                     mode: 'saveShortcuts',
                     shortcutList: JSON.stringify(shortcuts)
@@ -27,19 +27,21 @@
                 var lak = data.output;
                 var message = Array();
 
-                if($A.util.isUndefined(lak.ltngapps__Shortcuts__c) || lak.ltngapps__Shortcuts__c == null){
+                if($A.util.isUndefined(lak.ltngapps__Keyboard_Shortcuts__c) || lak.ltngapps__Keyboard_Shortcuts__c == null){
                     message.push(
-                        ["ui:message", {
+                        ["markup://ui:message", {
                             'severity': 'error',
-                            'body': 'Some error occured while removing keyboard shortcut'
+                            'body': 'Some error occured while removing keyboard shortcut',
+                            'closable': true
                         }]
                     );
 
                 }else{
                     message.push(
-                        ["ui:message", {
+                        ["markup://ui:message", {
                             'severity': 'success',
-                            'body': 'Shortcut was removed successfully'
+                            'body': 'Shortcut was removed successfully',
+                            'closable': true
                         }]
                     );
                     //Update the attribute so that it can trickle up to parent component
@@ -55,6 +57,8 @@
                     component.set('v.shortcutsMap', shortcutsMap);
                 }
                 if(message.length > 0) {
+                    console.log('test:', message);
+                    console.log('uiMessage:', component.find('uiMessage'));
                     //Create new components through utility method
                     component.find('utils').createComponents(message, component.find('uiMessage'));
                 }

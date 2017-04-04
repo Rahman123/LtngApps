@@ -10,17 +10,22 @@
 </a>
 
 <br/><br/>
-**LAKeyboardShortcutList.cmp**:
+**KEYBOARD SHORTCUTS**
+
+***LAKeyboardShortcutList.cmp***:
 - Component to add keyboard shortcuts
 - User choices are stored as JSON string to custom object
+- "shortcutsDefault" can be used by admins to provide a default JSON key map for new users who haven't created any shortcuts yet
 
-**LAKeyboardShortcutAdd.cmp**:
+
+***LAKeyboardShortcutAdd.cmp***:
 - Component to list keyboard shortcuts
 - User choices are retrieved from custom object and displayed as list
 
-**LAKeyboard.cmp**
+***LAKeyboard.cmp***
 - Adds LAKeyboardShortcutList.cmp and LAKeyboardShortcutAdd.cmp as nested components in lightning:tab
 - afterRender on renderer takes care of loading those shortcuts as settings those for document.onkeydown
+- Users can use buttons below "Path" to fetch current page path; With or without query params (anything after ?)
 
 
 **Credits**

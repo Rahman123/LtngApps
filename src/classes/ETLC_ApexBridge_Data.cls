@@ -34,16 +34,19 @@ public with sharing class ETLC_ApexBridge_Data {
     
     @AuraEnabled
     public List<SObject> records { get; set; }
-    
-    public void addMessage(MessageType msgType, String text) {
+
+    public void addMessage(MessageType msgType, String text, Boolean isSuccess) {
         List<String> ls = new List<String>();
         if (messages.containsKey(msgType)) ls = messages.get(msgType);
         ls.add(text);
         messages.put(msgType, ls);
         if (msgType == MessageType.Errors) {
-            isSuccess = false;
+            this.isSuccess = isSuccess;
             // throw new BlogException('Debbuging Error: ' + text);
         }
+    }
+    public void addMessage(MessageType msgType, String text) {
+        addMessage(msgType, text, isSuccess);
     }
     
     public Object getInputValue(String key) {

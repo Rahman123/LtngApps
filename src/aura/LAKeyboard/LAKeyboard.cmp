@@ -3,6 +3,10 @@
     <aura:attribute name="debug" type="Boolean" default="false" access="global"/>
     <aura:attribute name="debugClient" type="Boolean" default="false" access="global" />
 
+    <!-- Making shortcuts global so admins can specify default shortcuts for users -->
+    <!-- Had to use different attribute type because we can only specify string type in design file -->
+    <aura:attribute name="shortcutsDefault" type="String"  access="global" default='{"65":"/sObject/Account/list","67":"/sObject/Contact/list"}'/>
+
 
     <!-- For using ApexBridge Library -->
     <c:ETLC_ApexBridge aura:id="ApexBridge" debugServer="{!v.debug}" debugClient="{!v.debugClient}"/>
@@ -13,6 +17,7 @@
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
     <aura:attribute name="keyboard" type="LA_Keyboard__c" default="{'sobjectType': 'LA_Keyboard__c', 'ltngapps__Shortcuts__c': '{}','Name': ''}" access="public"/>
+    <!-- Making shortcuts global so admins can specify default shortcuts for users -->
     <aura:attribute name="shortcuts" type="Object"  access="public"/>
     <aura:attribute name="shortcutsMap" type="Object[]" access="public" />
 
@@ -24,9 +29,7 @@
                     Shortcuts
                 </aura:set>
                 <div aura:id="fetchUiMessage">{!v.body}</div>
-                <aura:if isTrue="{!v.shortcutsMap.length > 0}">
-                    <c:LAKeyboardShortcutList debug="{!v.debug}" debugClient="{!v.debugClient}" keyboard="{!v.keyboard}" shortcuts="{!v.shortcuts}" shortcutsMap="{!v.shortcutsMap}"/>
-                </aura:if>
+                <c:LAKeyboardShortcutList debug="{!v.debug}" debugClient="{!v.debugClient}" keyboard="{!v.keyboard}" shortcuts="{!v.shortcuts}" shortcutsMap="{!v.shortcutsMap}"/>
             </lightning:tab>
             <lightning:tab title="Add Shortcuts"
                     id="addshortcuts">

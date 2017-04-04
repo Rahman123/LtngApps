@@ -1,14 +1,15 @@
 @IsTest
-private class LAKeyboard_Controller_Test {
+private class LA_KeyboardShortcuts_Controller_Test {
 
     private static Profile p;
     private static User u;
 
+
     //NOT using @testSetup because need to manually insert data
     private static void setupData(){
-        List<LA_Keyboard__c> lakList = new List<LA_Keyboard__c>();
+        List<LA_Info__c> lakList = new List<LA_Info__c>();
         for(Integer i=0; i<210; i++){
-            LA_Keyboard__c lak = new LA_Keyboard__c();
+            LA_Info__c lak = new LA_Info__c();
             lak.Name = 'Name ' + i;
             lakList.add(lak);
         }
@@ -36,7 +37,7 @@ private class LAKeyboard_Controller_Test {
         Test.startTest();
 
         ETLC_ApexBridge_Data d1 = new ETLC_ApexBridge_Data();
-        d1.operation = 'LAKeyboard_Controller';
+        d1.operation = 'LA_KeyboardShortcuts_Controller';
         d1.input = ETLC_ApexBridge_Data.encodeData(data);
         d1.debug = true;
 
@@ -44,12 +45,13 @@ private class LAKeyboard_Controller_Test {
         ETLC_ApexBridge_Data d2 = ETLC_ApexBridge_Data.fromJSON(strD2);
 
         Test.stopTest();
-        LA_Keyboard__c lak = [SELECT ID, Name, User__c, Shortcuts__c from LA_Keyboard__c where User__c=:Userinfo.getUserId() LIMIT  1];
+        LA_Info__c lak = [SELECT ID, Name, User__c, Keyboard_Shortcuts__c from LA_Info__c where User__c=:Userinfo.getUserId() LIMIT  1];
 
-        LA_Keyboard__c retVal = (LA_Keyboard__c)ETLC_ApexBridge_Data.decodeData(d2.output, LA_Keyboard__c.class);
+        LA_Info__c retVal = (LA_Info__c)ETLC_ApexBridge_Data.decodeData(d2.output, LA_Info__c.class);
 
         System.assertEquals(lak.ID, retVal.ID);
     }
+
     
     private static testMethod void fetchShortcuts_negative() {
 
@@ -61,7 +63,7 @@ private class LAKeyboard_Controller_Test {
         Test.startTest();
 
         ETLC_ApexBridge_Data d1 = new ETLC_ApexBridge_Data();
-        d1.operation = 'LAKeyboard_Controller';
+        d1.operation = 'LA_KeyboardShortcuts_Controller';
         d1.input = ETLC_ApexBridge_Data.encodeData(data);
         d1.debug = true;
 
@@ -70,7 +72,7 @@ private class LAKeyboard_Controller_Test {
 
         Test.stopTest();
 
-        LA_Keyboard__c retVal = (LA_Keyboard__c)ETLC_ApexBridge_Data.decodeData(d2.output, LA_Keyboard__c.class);
+        LA_Info__c retVal = (LA_Info__c)ETLC_ApexBridge_Data.decodeData(d2.output, LA_Info__c.class);
 
         System.assertEquals(null, retVal.ID);
     }
@@ -79,7 +81,7 @@ private class LAKeyboard_Controller_Test {
     private static testMethod void fetchShortcuts_positive() {
         setupData();
 
-        LA_Keyboard__c lak = [select id from LA_Keyboard__c limit 1];
+        LA_Info__c lak = [select id from LA_Info__c limit 1];
         lak.User__c = Userinfo.getUserId();
         upsert lak;
 
@@ -91,7 +93,7 @@ private class LAKeyboard_Controller_Test {
         Test.startTest();
 
         ETLC_ApexBridge_Data d1 = new ETLC_ApexBridge_Data();
-        d1.operation = 'LAKeyboard_Controller';
+        d1.operation = 'LA_KeyboardShortcuts_Controller';
         d1.input = ETLC_ApexBridge_Data.encodeData(data);
         d1.debug = true;
 
@@ -100,7 +102,7 @@ private class LAKeyboard_Controller_Test {
 
         Test.stopTest();
 
-        LA_Keyboard__c retVal = (LA_Keyboard__c)ETLC_ApexBridge_Data.decodeData(d2.output, LA_Keyboard__c.class);
+        LA_Info__c retVal = (LA_Info__c)ETLC_ApexBridge_Data.decodeData(d2.output, LA_Info__c.class);
 
         System.assertEquals(lak.ID, retVal.ID);
     }
@@ -113,8 +115,8 @@ private class LAKeyboard_Controller_Test {
 
         System.runAs(u) {
 
-            LA_Keyboard__c lak = [select id, Name, Shortcuts__c from LA_Keyboard__c limit 1];
-            System.assertEquals(null, lak.Shortcuts__c);
+            LA_Info__c lak = [select id, Name, Keyboard_Shortcuts__c from LA_Info__c limit 1];
+            System.assertEquals(null, lak.Keyboard_Shortcuts__c);
 
             Map<String, Object> data = new Map<String, Object>{
                     'mode' => 'saveShortcuts',
@@ -124,7 +126,7 @@ private class LAKeyboard_Controller_Test {
             Test.startTest();
 
             ETLC_ApexBridge_Data d1 = new ETLC_ApexBridge_Data();
-            d1.operation = 'LAKeyboard_Controller';
+            d1.operation = 'LA_KeyboardShortcuts_Controller';
             d1.input = ETLC_ApexBridge_Data.encodeData(data);
             d1.debug = true;
 
@@ -133,9 +135,9 @@ private class LAKeyboard_Controller_Test {
 
             Test.stopTest();
 
-            LA_Keyboard__c retVal = (LA_Keyboard__c) ETLC_ApexBridge_Data.decodeData(d2.output, LA_Keyboard__c.class);
+            LA_Info__c retVal = (LA_Info__c) ETLC_ApexBridge_Data.decodeData(d2.output, LA_Info__c.class);
 
-            System.assertEquals(null, retVal.Shortcuts__c);
+            System.assertEquals(null, retVal.Keyboard_Shortcuts__c);
         }
     }
     private static testMethod void fetchShortcuts_runas() {
@@ -144,7 +146,7 @@ private class LAKeyboard_Controller_Test {
 
         System.runAs(u) {
 
-            LA_Keyboard__c lak = [select id from LA_Keyboard__c limit 1];
+            LA_Info__c lak = [select id from LA_Info__c limit 1];
 
             Map<String, Object> data = new Map<String, Object>{
                     'mode' => 'fetchShortcuts'
@@ -154,7 +156,7 @@ private class LAKeyboard_Controller_Test {
             Test.startTest();
 
             ETLC_ApexBridge_Data d1 = new ETLC_ApexBridge_Data();
-            d1.operation = 'LAKeyboard_Controller';
+            d1.operation = 'LA_KeyboardShortcuts_Controller';
             d1.input = ETLC_ApexBridge_Data.encodeData(data);
             d1.debug = true;
 
@@ -163,7 +165,7 @@ private class LAKeyboard_Controller_Test {
 
             Test.stopTest();
 
-            LA_Keyboard__c retVal = (LA_Keyboard__c) ETLC_ApexBridge_Data.decodeData(d2.output, LA_Keyboard__c.class);
+            LA_Info__c retVal = (LA_Info__c) ETLC_ApexBridge_Data.decodeData(d2.output, LA_Info__c.class);
 
             //test should pass for system admin but not as standard user because it doesn't have permission to this new object
             System.assertEquals(null, retVal.ID);
@@ -173,8 +175,8 @@ private class LAKeyboard_Controller_Test {
     private static testMethod void saveShortcuts_positive() {
         setupData();
 
-        LA_Keyboard__c lak = [select id, Shortcuts__c from LA_Keyboard__c limit 1];
-        System.assertEquals(null, lak.Shortcuts__c);
+        LA_Info__c lak = [select id, Keyboard_Shortcuts__c from LA_Info__c limit 1];
+        System.assertEquals(null, lak.Keyboard_Shortcuts__c);
 
 
         Map<String, Object> data = new Map<String, Object>{
@@ -185,7 +187,7 @@ private class LAKeyboard_Controller_Test {
         Test.startTest();
 
         ETLC_ApexBridge_Data d1 = new ETLC_ApexBridge_Data();
-        d1.operation = 'LAKeyboard_Controller';
+        d1.operation = 'LA_KeyboardShortcuts_Controller';
         d1.input = ETLC_ApexBridge_Data.encodeData(data);
         d1.debug = true;
 
@@ -194,9 +196,9 @@ private class LAKeyboard_Controller_Test {
 
         Test.stopTest();
 
-        LA_Keyboard__c retVal = (LA_Keyboard__c)ETLC_ApexBridge_Data.decodeData(d2.output, LA_Keyboard__c.class);
+        LA_Info__c retVal = (LA_Info__c)ETLC_ApexBridge_Data.decodeData(d2.output, LA_Info__c.class);
 
-        System.assertEquals('{}', retVal.Shortcuts__c);
+        System.assertEquals('{}', retVal.Keyboard_Shortcuts__c);
     }
 
 
